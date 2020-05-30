@@ -23,6 +23,15 @@ public class Reglas {
         }
     }
 
+    public void mostrarAntecedentes(){
+        for (int i = 0; i<antecedentes.length;i++){
+            if (i != 0){
+                System.out.print("&"+antecedentes[i]);
+            }else
+                System.out.print(antecedentes[i]);
+        }
+    }
+
     public int getIndice(){
         return this.indice;
     }
