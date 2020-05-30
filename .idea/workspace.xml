@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="603a9ae1-ce53-43a5-93bd-754f0e3007cb" name="Default Changelist" comment="" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeStyleSettingsInfer">
+    <option name="done" value="true" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectCodeStyleSettingsMigration">
+    <option name="version" value="1" />
+  </component>
+  <component name="ProjectId" id="1cVe7xhKJ1GkmEhEB7ZjRQaYVGq" />
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="com.company.Main" />
+      <module name="SistemaExperto" />
+      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="Application" factoryName="Application">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.Main" />
+      </list>
+    </recent_temporary>
+  </component>
+</project>
