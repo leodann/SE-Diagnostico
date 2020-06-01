@@ -4,13 +4,16 @@ import com.company.menu.Recuperar_Factores_Riesgo;
 import com.company.motroInferncia.MotoroInferencia;
 import com.company.motroInferncia.Reglas;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.util.ArrayList;
 
 public class Main {
 
     public static void main(String[] args) {
         //Recuperar_Factores_Riesgo recuperar_factores = new Recuperar_Factores_Riesgo();
-        ArrayList<String>antecedentes1 = new ArrayList<>();
+        /*ArrayList<String>antecedentes1 = new ArrayList<>();
         ArrayList<String>antecedentes2 = new ArrayList<>();
         ArrayList<String>antecedentes3 = new ArrayList<>();
         ArrayList<String>antecedentes4 = new ArrayList<>();
@@ -57,10 +60,32 @@ public class Main {
         BH.add(g);
         BH.add(h);
 
-        MotoroInferencia motor = new MotoroInferencia(conocimiento,BH);
+        MotoroInferencia motor = new MotoroInferencia(conocimiento,BH);*/
 
+        try {
+            RandomAccessFile raf = new RandomAccessFile("raf","rw");
+            raf.writeInt(2);
+            raf.writeChars("12345");
+            raf.writeChars("12345");
+            long posf = raf.length();
+            raf.seek(posf-24);
+            int ka = raf.readInt();
+            long pointer = raf.getFilePointer();
+            System.out.println(raf.length());
+            System.out.println(""+ ka);
+            System.out.println("puntero : "+ pointer);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-
+       /* String[] arr = new String [6];
+        for (int i = 0; i<arr.length;i++){
+            arr[i] = "a"+i;
+        }
+        System.out.println("tamaño: "+arr.length);
+        System.out.println(arr[arr.length-1]);*/
 
     }
 }
