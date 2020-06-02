@@ -22,7 +22,7 @@ import java.util.ResourceBundle;
 
 public class ActualizacionController implements Initializable {
     @FXML
-    Button home_btn,show_btn,edit_btn,delete_btn,add_btn,go_btn;
+    Button home_btn,edit_btn,delete_btn,add_btn,go_btn;
     @FXML
     Label llave_lbl, ant_lbl, cons_lbl;
     @FXML
@@ -42,7 +42,6 @@ public class ActualizacionController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         inicarComponentes();
         home_btn.setOnAction(handler);
-        show_btn.setOnAction(handler);
         edit_btn.setOnAction(handler);
         delete_btn.setOnAction(handler);
         add_btn.setOnAction(handler);
@@ -54,9 +53,6 @@ public class ActualizacionController implements Initializable {
         public void handle(ActionEvent event) {
             if (event.getSource()==home_btn){
                 System.out.println("HOME");
-            }
-            if (event.getSource()==show_btn){
-                System.out.println("MOSTRAR");
             }
             if (event.getSource()==edit_btn){
                 info_hb.setVisible(true);
