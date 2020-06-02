@@ -3,6 +3,7 @@ package com.company.controller;
 import com.company.indice.archivoMaestro;
 import com.company.motroInferncia.Reglas;
 import com.company.motroInferncia.ReglasTabla;
+import com.sun.org.apache.bcel.internal.generic.ANEWARRAY;
 import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -59,6 +60,7 @@ public class ActualizacionController implements Initializable {
             }
             if (event.getSource()==edit_btn){
                 info_hb.setVisible(true);
+                restablecerValores();
                 mostrarLlaveField(true);
                 mostrarAntField(true);
                 mostrarConsField(true);
@@ -68,6 +70,7 @@ public class ActualizacionController implements Initializable {
             }
             if (event.getSource()==delete_btn){
                 info_hb.setVisible(true);
+                restablecerValores();
                 mostrarLlaveField(true);
                 mostrarConsField(false);
                 mostrarAntField(false);
@@ -76,6 +79,7 @@ public class ActualizacionController implements Initializable {
             }
             if (event.getSource()==add_btn){
                 info_hb.setVisible(true);
+                restablecerValores();
                 mostrarLlaveField(false);
                 mostrarAntField(true);
                 mostrarConsField(true);
@@ -106,16 +110,59 @@ public class ActualizacionController implements Initializable {
                 break;
 
         }
+        recargarTabla();
 
     }
 
     private void editar(){
-        System.out.println("EDITANDING");
+        int llave = Integer.parseInt(llave_tf.getText());
+        String consecuente = cons_tf.getText().toUpperCase();
+        String entrada = ant_tf.getText();
+
+        String[] aux = entrada.split("&");
+        ArrayList<String>antecedentes = new ArrayList<>();
+        String antecendente_completo;
+        String consecuente_completo;
+        try {
+            for (int i = 0; i<aux.length;i++){
+                antecendente_completo = "";
+                for (int j = 0; j<30;j++){
+                    if (j<aux[i].length()){
+                        antecendente_completo += aux[i].charAt(j);
+                    }else{
+                        antecendente_completo += " ";
+                    }
+                }
+                antecedentes.add(antecendente_completo);
+            }
+            System.out.println("EDITANDING : "+llave);
+            System.out.println("ANTECEDENTES: ");
+            for (String s : antecedentes){
+                System.out.println("");
+                System.out.print(""+s);
+                System.out.println("tamaño: "+s.length());
+            }
+            System.out.println("");
+            consecuente_completo = "";
+            for (int i = 0 ; i<30;i++){
+                if(i<consecuente.length()){
+                    consecuente_completo += consecuente.charAt(i);
+                }else{
+                    consecuente_completo +=" ";
+                }
+            }
+            consecuente = consecuente_completo;
+            System.out.println("CONSECUENTE: "+consecuente);
+            System.out.print("TAMAÑO: "+consecuente.length());
+            am.editar(llave,antecedentes,consecuente);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void eliminar(){
-        int llave = Integer.parseInt(llave_tf.getText());
         try {
+            int llave = Integer.parseInt(llave_tf.getText());
             System.out.println("ELIMINANDING: "+llave);
             am.eliminar(llave);
         } catch (IOException e) {
@@ -125,6 +172,49 @@ public class ActualizacionController implements Initializable {
 
     private void agregar(){
         System.out.println("AGREGANDING");
+        String consecuente = cons_tf.getText().toUpperCase();
+        String entrada = ant_tf.getText();
+
+        String[] aux = entrada.split("&");
+        ArrayList<String>antecedentes = new ArrayList<>();
+        String antecendente_completo;
+        String consecuente_completo;
+        try {
+            for (int i = 0; i<aux.length;i++){
+                antecendente_completo = "";
+                for (int j = 0; j<30;j++){
+                    if (j<aux[i].length()){
+                        antecendente_completo += aux[i].charAt(j);
+                    }else{
+                        antecendente_completo += " ";
+                    }
+                }
+                antecedentes.add(antecendente_completo);
+            }
+            System.out.println("ANTECEDENTES: ");
+            for (String s : antecedentes){
+                System.out.println("");
+                System.out.print(""+s);
+                System.out.println("tamaño: "+s.length());
+            }
+            System.out.println("");
+            consecuente_completo = "";
+            for (int i = 0 ; i<30;i++){
+                if(i<consecuente.length()){
+                    consecuente_completo += consecuente.charAt(i);
+                }else{
+                    consecuente_completo +=" ";
+                }
+            }
+            consecuente = consecuente_completo;
+            System.out.println("CONSECUENTE: "+consecuente);
+            System.out.print("TAMAÑO: "+consecuente.length());
+            ArrayList<Reglas>r = new ArrayList<>();
+            r.add(new Reglas(antecedentes,consecuente,0));
+            am.añadir(r);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void inicarComponentes(){
@@ -189,18 +279,24 @@ public class ActualizacionController implements Initializable {
     private void mostrarLlaveField(boolean f){
         llave_lbl.setVisible(f);
         llave_tf.setVisible(f);
+
+    }
+
+    private void restablecerValores(){
         llave_tf.setText("");
+        ant_tf.setText("");
+        cons_tf.setText("");
     }
 
     private void mostrarAntField(boolean f){
         ant_tf.setVisible(f);
-        ant_tf.setText("");
         ant_lbl.setVisible(f);
+
     }
 
     private void mostrarConsField(boolean f){
         cons_tf.setVisible(f);
-        cons_tf.setText("");
         cons_lbl.setVisible(f);
     }
+
 }
