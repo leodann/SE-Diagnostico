@@ -1,18 +1,22 @@
 package com.company.controller;
 
 import com.company.indice.archivoMaestro;
+import com.company.motroInferncia.Reglas;
+import com.company.motroInferncia.ReglasTabla;
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 
+import javax.xml.bind.SchemaOutputResolver;
+import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class ActualizacionController implements Initializable {
@@ -24,8 +28,14 @@ public class ActualizacionController implements Initializable {
     TextField llave_tf,ant_tf,cons_tf;
     @FXML
     HBox info_hb;
+    @FXML
+    TableView<ReglasTabla>reglas_tbl;
 
     private archivoMaestro am = new archivoMaestro();
+    private ArrayList<Reglas> BaseConocimiento =new ArrayList<>();
+    private boolean archivoExiste;
+    private String cvacia;
+    private int accion = 0;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -53,6 +63,7 @@ public class ActualizacionController implements Initializable {
                 mostrarAntField(true);
                 mostrarConsField(true);
                 go_btn.setVisible(true);
+                accion = 1;
 
             }
             if (event.getSource()==delete_btn){
@@ -61,6 +72,7 @@ public class ActualizacionController implements Initializable {
                 mostrarConsField(false);
                 mostrarAntField(false);
                 go_btn.setVisible(true);
+                accion = 2;
             }
             if (event.getSource()==add_btn){
                 info_hb.setVisible(true);
@@ -68,24 +80,66 @@ public class ActualizacionController implements Initializable {
                 mostrarAntField(true);
                 mostrarConsField(true);
                 go_btn.setVisible(true);
+                accion = 3;
             }
             if  (event.getSource()==go_btn){
                 info_hb.setVisible(false);
                 inicarComponentes();
+                acciones(accion);
             }
 
         }
     };
 
+    private void acciones(int accion){
+        switch (accion){
+            case 1:
+                editar();
+                break;
+            case 2:
+                eliminar();
+                break;
+            case 3:
+                agregar();
+                break;
+            default:
+                break;
+
+        }
+
+    }
+
+    private void editar(){
+        System.out.println("EDITANDING");
+    }
+
+    private void eliminar(){
+        int llave = Integer.parseInt(llave_tf.getText());
+        try {
+            System.out.println("ELIMINANDING: "+llave);
+            am.eliminar(llave);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void agregar(){
+        System.out.println("AGREGANDING");
+    }
+
     private void inicarComponentes(){
+        cvacia = "                              ";
         info_hb.setVisible(false);
         mostrarAntField(false);
         mostrarConsField(false);
         mostrarLlaveField(false);
         go_btn.setVisible(false);
-        boolean archivo =am.inicializar();
-        if  (!archivo){
+        archivoExiste =am.inicializar();
+        if  (!archivoExiste){
             AlertaNoexisteArchivo();
+
+        }else{
+            cargarTabla();
         }
     }
 
@@ -97,18 +151,56 @@ public class ActualizacionController implements Initializable {
         alert.showAndWait();
     }
 
+    private void recargarTabla(){
+        ArrayList<ReglasTabla>rtbl = new ArrayList<>();
+        ObservableList<ReglasTabla>obs = FXCollections.observableArrayList(rtbl);
+        reglas_tbl.setItems(obs);
+        cargarTabla();
+    }
+
+    private void cargarTabla(){
+        String antecedente_final = "";
+        ArrayList<ReglasTabla>rtbl = new ArrayList<>();
+        try {
+            BaseConocimiento = am.getBC();
+            for (Reglas rbc : BaseConocimiento){
+                antecedente_final = "";
+                String[]antecedentes = rbc.getAntecedentes();
+                for (int i = 0; i<antecedentes.length;i++){
+                    if (!antecedentes[i].equalsIgnoreCase(cvacia)){
+                        String[] antecedente_sin_espacios = antecedentes[i].split(" ");
+                        if (i != 0){
+                            antecedente_final +=" & ";
+                        }
+                        antecedente_final  += antecedente_sin_espacios[0];
+                    }
+                }
+                String[]cons_sin_espacios = rbc.getConsecuente().split(" ");
+                rtbl.add(new ReglasTabla(rbc.getIndice(),antecedente_final,cons_sin_espacios[0]));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        ObservableList<ReglasTabla> tablaReglas = FXCollections.observableArrayList(rtbl);
+        reglas_tbl.setItems(tablaReglas);
+
+    }
+
     private void mostrarLlaveField(boolean f){
         llave_lbl.setVisible(f);
         llave_tf.setVisible(f);
+        llave_tf.setText("");
     }
 
     private void mostrarAntField(boolean f){
         ant_tf.setVisible(f);
+        ant_tf.setText("");
         ant_lbl.setVisible(f);
     }
 
     private void mostrarConsField(boolean f){
         cons_tf.setVisible(f);
+        cons_tf.setText("");
         cons_lbl.setVisible(f);
     }
 }
