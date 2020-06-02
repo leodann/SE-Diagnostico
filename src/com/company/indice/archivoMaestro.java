@@ -39,17 +39,46 @@ public class archivoMaestro {
     }
 
     public void escribir_archivo_maestro(ArrayList<Reglas> reglas) throws IOException {
-
         RandomAccessFile archi = new RandomAccessFile("conocimiento", "rw");
         int llave;
         long lreg = 0;
         long posicion;
+        archi.setLength(0);
+        System.out.println("Crenado base de conocimientos");
+        llave = 1;
+        for (int i = 0; i < reglas.size(); i++) {
+            Reglas regla1 = reglas.get(i);
+            archi.writeInt(llave);
+            for (int j = 0; j < 8; j++) {
+                if (j < regla1.getAntecedentes().length){
+                    archi.writeChars(regla1.getAntecedentes()[j]);
+                }else
+                {
+                    String cvacia = "                              ";
+                    archi.writeChars(cvacia);
+                }
 
-        if (archi.length()>0){
+            }
+            archi.writeChars(regla1.getConsecuente());
+            posicion = (llave-1)*lreg;
+            System.out.println("llave y pos: " + llave +","+ posicion);
+            ari.Insertar(llave,posicion);
+            lreg = tamReg();
+            llave++;
+        }
+        archi.close();
+    }
+
+    public void añadir (ArrayList<Reglas> reglas) throws IOException {
+        RandomAccessFile archi = new RandomAccessFile("conocimiento", "rw");
+        int llave;
+        long lreg = 0;
+        long posicion;
+        if (archi.length()!=0){
             System.out.println("Añadiendo reglas");
             lreg = tamReg();
             archi.seek(archi.length() - tamReg());
-            llave = archi.readInt();
+            llave = archi.readInt()+1;
             archi.seek(archi.length());
             for (int i = 0; i < reglas.size(); i++) {
                 Reglas regla1 = reglas.get(i);
@@ -69,32 +98,10 @@ public class archivoMaestro {
                 ari.Insertar(llave,posicion);
                 llave++;
             }//for
-
-        }else {
-            System.out.println("Crenado base de conocimientos");
-            llave = 1;
-            for (int i = 0; i < reglas.size(); i++) {
-                Reglas regla1 = reglas.get(i);
-                archi.writeInt(llave);
-                for (int j = 0; j < 8; j++) {
-                    if (j < regla1.getAntecedentes().length){
-                        archi.writeChars(regla1.getAntecedentes()[j]);
-                    }else
-                    {
-                        String cvacia = "                              ";
-                        archi.writeChars(cvacia);
-                    }
-
-                }
-                archi.writeChars(regla1.getConsecuente());
-                posicion = (llave-1)*lreg;
-                System.out.println("llave y pos: " + llave +","+ posicion);
-                ari.Insertar(llave,posicion);
-                lreg = tamReg();
-                llave++;
-            }
+        }else{
+            System.out.println("ARCHIVO VACIO");
         }
-        archi.close();
+
     }
 
     public void escribirAct() throws IOException {
@@ -429,5 +436,6 @@ public class archivoMaestro {
         System.out.println("T A M A Ñ O       T O T A L :" +aux.length());
         aux.close();
         ArrayList<Reglas> con2 = recuperarSecuencial2();
+        escribir_archivo_maestro(con2);
     }
 }

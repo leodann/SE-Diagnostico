@@ -49,6 +49,7 @@ public class Main {
         Reglas r5 = new Reglas(antecedentes5,k,5);
         Reglas r6 = new Reglas(antecedentes6,a,6);
 
+        ArrayList<Reglas>conocimiento2 = new ArrayList<>();
         ArrayList<Reglas>conocimiento = new ArrayList<>();
         conocimiento.add(r1);
         conocimiento.add(r2);
@@ -56,6 +57,8 @@ public class Main {
         conocimiento.add(r4);
         conocimiento.add(r5);
         conocimiento.add(r6);
+
+        conocimiento2.add(r1);
 
         ArrayList<String>BH = new ArrayList<>();
         BH.add(f);
@@ -91,10 +94,15 @@ public class Main {
         try {
             //am.escribir_archivo_maestro(conocimiento);
             //System.out.println(""+ am.tamReg());
-            //am.recuperarSecuencial();
+
             //am.recuperarAleatorio();
-            am.editar(5,nuevos,k);
-            am.eliminar(1);
+            //am.editar(1,nuevos,k);
+            //am.eliminar(1);
+            am.añadir(conocimiento2);
+            System.out.println("- - - - - -  - - E N   D E S P U E S - - - -- - - - - - -  -- ");
+            am.recuperarSecuencial();
+
+
         } catch (IOException ioException) {
             ioException.printStackTrace();
         }
