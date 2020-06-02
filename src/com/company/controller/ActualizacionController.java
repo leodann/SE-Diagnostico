@@ -211,7 +211,12 @@ public class ActualizacionController implements Initializable {
             System.out.print("TAMAÑO: "+consecuente.length());
             ArrayList<Reglas>r = new ArrayList<>();
             r.add(new Reglas(antecedentes,consecuente,0));
-            am.añadir(r);
+            if (archivoExiste){
+                am.añadir(r);
+            }else{
+                am.escribir_archivo(r,"conocimiento");
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
