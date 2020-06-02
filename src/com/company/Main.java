@@ -17,6 +17,7 @@ public class Main {
         ArrayList<String>antecedentes4 = new ArrayList<>();
         ArrayList<String>antecedentes5 = new ArrayList<>();
         ArrayList<String>antecedentes6 = new ArrayList<>();
+        ArrayList<String>nuevos = new ArrayList<>();
 
         String a = "A                             ";
         String b = "B                             ";
@@ -36,6 +37,10 @@ public class Main {
         antecedentes5.add(b);
         antecedentes5.add(c);
         antecedentes6.add(k);
+        nuevos.add(c);
+        nuevos.add(b);
+        nuevos.add(f);
+        nuevos.add(e);
 
         Reglas r1 = new Reglas(antecedentes1,b,1);
         Reglas r2 = new Reglas(antecedentes2,c,2);
@@ -87,7 +92,8 @@ public class Main {
             //am.escribir_archivo_maestro(conocimiento);
             //System.out.println(""+ am.tamReg());
             //am.recuperarSecuencial();
-            am.recuperarAleatorio();
+            //am.recuperarAleatorio();
+            am.editar(5,nuevos,k);
         } catch (IOException ioException) {
             ioException.printStackTrace();
         }

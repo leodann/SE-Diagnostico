@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class archivoMaestro {
@@ -182,5 +183,174 @@ public class archivoMaestro {
             }
         }
         return archi.getFilePointer();
+    }
+
+    ///PRUEBAS
+
+    public ArrayList<Reglas> recuperarSecuencial2() throws FileNotFoundException, IOException
+    {
+        long ap_actual,ap_final;
+        String consec = "";
+        Reglas regla;
+        RandomAccessFile leer_archi = new RandomAccessFile("conocimiento2","rw");
+        ArrayList<String> antecedentes = new ArrayList<>();
+        ArrayList<Reglas> reglasLeer = new ArrayList<Reglas>();
+
+        while((ap_actual=leer_archi.getFilePointer())!=(ap_final=leer_archi.length()))
+        {
+            System.out.println("puntero "+leer_archi.getFilePointer());
+            System.out.println("tamaño "+leer_archi.length());
+            llave=leer_archi.readInt();
+            System.out.println("Llave: " + llave);
+            for (int i = 0; i < 8; i++) {
+                String ant = "";
+                for (int j = 0; j < 30; j++) {
+                    ant += leer_archi.readChar();
+                }
+                System.out.println("ant num " + i + ": " + ant);
+                antecedentes.add(ant);
+            }
+            consec = "";
+            for (int i = 0; i < 30; i++) {
+                consec += leer_archi.readChar();
+            }
+            System.out.println("Consecuente: " + consec);
+            regla = new Reglas(antecedentes,consec,llave);
+            reglasLeer.add(regla);
+        }
+        return reglasLeer;
+    }
+
+    public void editar (int llave,List<String>nuevosAntecedentes,String nuevoConsecuente) throws IOException {
+        long pos = ari.Buscar(llave);
+        System.out.println("--------------------------------------------------------------------------------------------");
+        System.out.println("POSICION A EDITAR : "+ pos);
+        RandomAccessFile leer_archi = new RandomAccessFile("conocimiento","rw");
+        //raf.seek(pos);
+        //busqueda secuencial hasta pos -> arr1
+        long ap_actual,ap_final;
+        String consec = "";
+        Reglas regla;
+        
+        ArrayList<String> antecedentes = new ArrayList<>();
+        ArrayList<Reglas> reglasLeer1 = new ArrayList<Reglas>();        
+
+        while((ap_actual=leer_archi.getFilePointer())!=(ap_final=pos))
+        {
+            System.out.println("puntero "+leer_archi.getFilePointer());
+            System.out.println("tamaño "+leer_archi.length());
+            llave=leer_archi.readInt();
+            System.out.println("Llave: " + llave);
+            for (int i = 0; i < 8; i++) {
+                String ant = "";
+                for (int j = 0; j < 30; j++) {
+                    ant += leer_archi.readChar();
+                }
+                System.out.println("ant num " + i + ": " + ant);
+                antecedentes.add(ant);
+            }
+            consec = "";
+            for (int i = 0; i < 30; i++) {
+                consec += leer_archi.readChar();
+            }
+            System.out.println("Consecuente: " + consec);
+            regla = new Reglas(antecedentes,consec,llave);
+            reglasLeer1.add(regla);
+        }
+        reglasLeer1.add(new Reglas(nuevosAntecedentes,nuevoConsecuente,0));
+        pos += tamReg();
+        if (pos == leer_archi.length()){
+            System.out.println("final del archivo");
+        }else{
+            while((ap_actual=pos)!=(ap_final=leer_archi.length()))
+            {
+                System.out.println("puntero "+leer_archi.getFilePointer());
+                System.out.println("tamaño "+leer_archi.length());
+                llave=leer_archi.readInt();
+                System.out.println("Llave: " + llave);
+                for (int i = 0; i < 8; i++) {
+                    String ant = "";
+                    for (int j = 0; j < 30; j++) {
+                        ant += leer_archi.readChar();
+                    }
+                    System.out.println("ant num " + i + ": " + ant);
+                    antecedentes.add(ant);
+                }
+                consec = "";
+                for (int i = 0; i < 30; i++) {
+                    consec += leer_archi.readChar();
+                }
+                System.out.println("Consecuente: " + consec);
+                regla = new Reglas(antecedentes,consec,llave);
+                reglasLeer1.add(regla);
+                pos = leer_archi.getFilePointer();
+            }
+
+        }
+        leer_archi.close();
+        rescribir(reglasLeer1);
+
+    }
+
+    public void rescribir(ArrayList<Reglas> reglas) throws IOException {
+        RandomAccessFile aux = new RandomAccessFile("conocimiento2","rw");
+        System.out.println("PRIMER INTETO");
+        //CONOCIMIENTO EDITADO
+        int llave;
+        long lreg = 0;
+        long posicion;
+
+        if (aux.length()>0){
+            System.out.println("Añadiendo reglas");
+            lreg = tamReg();
+            aux.seek(aux.length() - tamReg());
+            llave = aux.readInt();
+            aux.seek(aux.length());
+            for (int i = 0; i < reglas.size(); i++) {
+                Reglas regla1 = reglas.get(i);
+                aux.writeInt(llave);
+                for (int j = 0; j < 8; j++) {
+                    if (j < regla1.getAntecedentes().length){
+                        aux.writeChars(regla1.getAntecedentes()[j]);
+                    }else
+                    {
+                        String cvacia = "                              ";
+                        aux.writeChars(cvacia);
+                    }
+
+                }
+                aux.writeChars(regla1.getConsecuente());
+                posicion = (llave-1)*lreg;
+                ari.Insertar(llave,posicion);
+                llave++;
+            }//for
+
+        }else {
+            ari = new arbolIndice();
+            System.out.println("Crenado base de conocimientos");
+            llave = 1;
+            for (int i = 0; i < reglas.size(); i++) {
+                Reglas regla1 = reglas.get(i);
+                aux.writeInt(llave);
+                for (int j = 0; j < 8; j++) {
+                    if (j < regla1.getAntecedentes().length){
+                        aux.writeChars(regla1.getAntecedentes()[j]);
+                    }else
+                    {
+                        String cvacia = "                              ";
+                        aux.writeChars(cvacia);
+                    }
+
+                }
+                aux.writeChars(regla1.getConsecuente());
+                posicion = (llave-1)*lreg;
+                System.out.println("llave y pos: " + llave +","+ posicion);
+                ari.Insertar(llave,posicion);
+                lreg = tamReg();
+                llave++;
+            }
+        }
+        aux.close();
+        ArrayList<Reglas> con2 = recuperarSecuencial2();
     }
 }
