@@ -94,6 +94,7 @@ public class Main {
             //am.recuperarSecuencial();
             //am.recuperarAleatorio();
             am.editar(5,nuevos,k);
+            am.eliminar(1);
         } catch (IOException ioException) {
             ioException.printStackTrace();
         }
