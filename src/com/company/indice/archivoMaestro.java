@@ -16,15 +16,15 @@ public class archivoMaestro {
     int ren,col,celda;
     arbolIndice ari = new arbolIndice();
 
-    public archivoMaestro (){
-        inicializar();
-    }
+    public archivoMaestro (){}
 
-    private void inicializar(){
+    public boolean inicializar(){
+        boolean existeArchivo = false;
         try {
             long fin;
             RandomAccessFile archi = new RandomAccessFile("conocimiento","r");
             System.out.println("ＥＬ   ＡＲＣＨＩＶＯ   ＥＸＩＳＴＥ");
+            existeArchivo = true;
             fin = archi.length();
             archi.close();
 
@@ -40,7 +40,10 @@ public class archivoMaestro {
         } catch (Exception e) {
             System.out.println("ＥＬ   ＡＲＣＨＩＶＯ  ＮＯ ＥＸＩＳＴＥ");
             System.out.println("ＩＮＧＲＥＳＥ  ＲＥＧＬＡＳ  ＥＮ   ＬＡ  ＢＡＳＥ  ＤＥ  ＣＯＮＯＣＩＭＩＥＮＴＯＳ");
+            existeArchivo = false;
         }
+
+        return existeArchivo;
     }
 
     public void escribir_archivo(ArrayList<Reglas> reglas , String archiNombre) throws IOException {
