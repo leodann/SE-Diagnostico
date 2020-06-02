@@ -1,5 +1,6 @@
 package com.company.controller;
 
+import com.company.Main;
 import com.company.indice.archivoMaestro;
 import com.company.motroInferncia.Reglas;
 import com.company.motroInferncia.ReglasTabla;
@@ -10,9 +11,13 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 
 import javax.xml.bind.SchemaOutputResolver;
 import java.io.IOException;
@@ -21,6 +26,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class ActualizacionController implements Initializable {
+    public Stage StageP1;
     @FXML
     Button home_btn,show_btn,edit_btn,delete_btn,add_btn,go_btn;
     @FXML
@@ -53,10 +59,11 @@ public class ActualizacionController implements Initializable {
         @Override
         public void handle(ActionEvent event) {
             if (event.getSource()==home_btn){
-                System.out.println("HOME");
-            }
-            if (event.getSource()==show_btn){
-                System.out.println("MOSTRAR");
+                try {
+                    pantallafuncion(home_btn);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
             if (event.getSource()==edit_btn){
                 info_hb.setVisible(true);
@@ -302,6 +309,17 @@ public class ActualizacionController implements Initializable {
     private void mostrarConsField(boolean f){
         cons_tf.setVisible(f);
         cons_lbl.setVisible(f);
+    }
+
+    public void pantallafuncion(Button btn) throws IOException
+    {
+        if(btn == home_btn)
+        {
+            Parent actualizacion = FXMLLoader.load(getClass().getResource("../GUI/MenúPrincipalFXML.fxml"));
+            Scene escena = new Scene(actualizacion, 600,600);
+            StageP1 = Main.homeS;
+            StageP1.setScene(escena);
+        }
     }
 
 }

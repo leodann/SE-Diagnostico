@@ -99,23 +99,27 @@ public class MotoroInferencia {
     //PROBLEMAS
     private void resolucion(String goal){
         boolean existe = false;
-
-        String nuevoHecho = conjuntoConflicto.get(0).getConsecuente();
-        existe = buscarEnBh(nuevoHecho,bh);
-        if (!existe){
-            bh.add(nuevoHecho);
-            equiparar(conocimientos,bh);
-            conocimientos = reglasNoAplicables;
-        }
-        conjuntoConflicto.remove(0);
-        indice_Reglas.remove(0);
-
-        if(!conjuntoConflicto.isEmpty() && !goal.equalsIgnoreCase(nuevoHecho)){
-            resolucion(goal);
-        }else if(goal.equalsIgnoreCase(nuevoHecho)){
-            System.out.println("La meta ha sido alcanzada");
-        }else{
+        if(conjuntoConflicto.isEmpty()){
             System.out.println("La meta no se logro y ya no hay más reglas que aplicar");
+        }else {
+            String nuevoHecho = conjuntoConflicto.get(0).getConsecuente();
+            existe = buscarEnBh(nuevoHecho, bh);
+
+            if (!existe) {
+                bh.add(nuevoHecho);
+                equiparar(conocimientos, bh);
+                conocimientos = reglasNoAplicables;
+            }
+            conjuntoConflicto.remove(0);
+            indice_Reglas.remove(0);
+
+            if (!conjuntoConflicto.isEmpty() && !goal.equalsIgnoreCase(nuevoHecho)) {
+                resolucion(goal);
+            } else if (goal.equalsIgnoreCase(nuevoHecho)) {
+                System.out.println("La meta ha sido alcanzada");
+            } else {
+                System.out.println("La meta no se logro y ya no hay más reglas que aplicar");
+            }
         }
     }
 

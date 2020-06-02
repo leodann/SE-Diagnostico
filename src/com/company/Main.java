@@ -14,14 +14,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class Main extends Application {
-
+    public static Stage homeS;
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("GUI/ActualizacionFXML.fxml"));
+        homeS = primaryStage;
+        Parent root = FXMLLoader.load(getClass().getResource("GUI/MenúPrincipalFXML.fxml"));
         primaryStage.setMaximized(false);
         primaryStage.setResizable(false);
         primaryStage.setTitle("SE diagnostico de Diabetes");
-        primaryStage.setScene(new Scene(root,800,600));
+        primaryStage.setScene(new Scene(root,600,600));
         primaryStage.show();
     }
 
