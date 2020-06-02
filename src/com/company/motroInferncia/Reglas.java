@@ -8,6 +8,8 @@ public class Reglas {
     private String consecuente;
     private int indice;
 
+    public Reglas(){}
+
     public Reglas(List<String>list_antecedentes, String consecuente, int indice){
         this.list_antecedentes = list_antecedentes;
         convertirLista();
@@ -30,6 +32,13 @@ public class Reglas {
             }else
                 System.out.print(antecedentes[i]);
         }
+    }
+
+    public void mostrarRegla(){
+        System.out.print(""+indice+".- ");
+        mostrarAntecedentes();
+        System.out.print("-->"+consecuente);
+        System.out.println("");
     }
 
     public int getIndice(){

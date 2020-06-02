@@ -10,7 +10,6 @@ import java.util.ArrayList;
 public class Main {
 
     public static void main(String[] args) {
-        //Recuperar_Factores_Riesgo recuperar_factores = new Recuperar_Factores_Riesgo();
         ArrayList<String>antecedentes1 = new ArrayList<>();
         ArrayList<String>antecedentes2 = new ArrayList<>();
         ArrayList<String>antecedentes3 = new ArrayList<>();
@@ -66,53 +65,25 @@ public class Main {
         BH.add(g);
         BH.add(h);
 
-/*<<<<<<< HEAD
-         */
-/*        MotoroInferencia motor = new MotoroInferencia(conocimiento,BH);*/
-
-  /*      try {
-            RandomAccessFile raf = new RandomAccessFile("raf","rw");
-            raf.writeInt(2);
-            raf.writeChars("12345");
-            raf.writeChars("12345");
-            long posf = raf.length();
-            raf.seek(posf-24);
-            int ka = raf.readInt();
-            long pointer = raf.getFilePointer();
-            System.out.println(raf.length());
-            System.out.println(""+ ka);
-            System.out.println("puntero : "+ pointer);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-=======
-            */
-        //MotoroInferencia motor = new MotoroInferencia(conocimiento,BH);
-
         archivoMaestro am = new archivoMaestro();
+        ArrayList<Reglas> BC = new ArrayList<>();
         try {
-            //am.escribir_archivo_maestro(conocimiento);
-            //System.out.println(""+ am.tamReg());
-
-            //am.recuperarAleatorio();
-            //am.editar(1,nuevos,k);
+            //am.escribir_archivo(conocimiento,"conocimiento");
             //am.eliminar(1);
-            am.añadir(conocimiento2);
-            System.out.println("- - - - - -  - - E N   D E S P U E S - - - -- - - - - - -  -- ");
-            am.recuperarSecuencial();
-
-
-        } catch (IOException ioException) {
-            ioException.printStackTrace();
+            //am.recuperarAleatorio();
+            am.editar(1,nuevos,k);
+            BC = am.getBC();
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
-
-       /* String[] arr = new String [6];
-        for (int i = 0; i<arr.length;i++){
-            arr[i] = "a"+i;
+        System.out.println("--------------------------------------------------------------------------------------------");
+        System.out.println("--------------------------------------------------------------------------------------------");
+        System.out.println("--------------------------------------B C---------------------------------------------------");
+        System.out.println("--------------------------------------------------------------------------------------------");
+        System.out.println("--------------------------------------------------------------------------------------------");
+        for (Reglas r : BC){
+            r.mostrarRegla();
         }
-        System.out.println("tamaño: "+arr.length);
-        System.out.println(arr[arr.length-1]);*/
 
     }
 }
