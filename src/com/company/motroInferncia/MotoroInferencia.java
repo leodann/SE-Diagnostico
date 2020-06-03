@@ -55,10 +55,7 @@ public class MotoroInferencia {
                 reglasNoEquiparadas.add(regla);
 
             }
-        }
-        for (Reglas r : reglasNoEquiparadas){
-            r.mostrarRegla();
-        }
+        }        
         reglasNoAplicables = reglasNoEquiparadas;
 
     }
