@@ -17,30 +17,22 @@ public class MotoroInferencia {
         this.indice_Reglas = new ArrayList<>();
         this.conjuntoConflicto = new ArrayList<>();
         this.reglasAplicadas = new ArrayList<>();
-        inferir();
+        //inferir();
     }
 
-    private void inferir (){
-        System.out.println("INICIANDO INFERENCIA");
+    public ArrayList<String> inferir (String goal){
         equiparar(conocimientos,bh);
         conocimientos = reglasNoAplicables;
-        resolucion("A");
-        System.out.println("Base de Hechos");
-        mostrarBH();
-        System.out.println("Conjunto Conflicto");
-        mostrarConflicto();
-        imprimirIndices();
-        mostrarConocimiento();
+        resolucion(goal);
+        return bh;
     }
 
     private void equiparar(ArrayList<Reglas>reglas,ArrayList<String>bh){
-        System.out.println("fase de Equiparacion");
         ArrayList<Reglas>reglasNoEquiparadas = new ArrayList<>();
         boolean regla_equiparada = false;
         boolean antecedente_equipardo;
         //Recorremos las reglas
         for(Reglas regla : reglas){
-            System.out.println("Equiparando Regla");
             int i = 0;
             String [] antecedentes = regla.getAntecedentes();
             //Recorremos los antecedentes
@@ -52,27 +44,20 @@ public class MotoroInferencia {
                 //Si el antecedente no se encuentra en la BH o ya no hay más antecedentes se detiene el ciclo
             }while(i<antecedentes.length && antecedente_equipardo);
             //Si todos los antecedentes existen
-            if  (antecedente_equipardo){
+            if  (antecedente_equipardo) {
                 //La regla puede aplicarse
                 regla_equiparada = true;
-                System.out.println("Añadiendo regla al conjunto conflicto");
                 //Generamos conjunto Conflicto
                 conjuntoConflicto.add(regla);
                 indice_Reglas.add(regla.getIndice());
-
             }else{
-                System.out.println("Regla no aplicable");
                 regla_equiparada = false;
                 reglasNoEquiparadas.add(regla);
 
             }
         }
-        System.out.println("REGLAS NO EQUIPARABLES");
-        for(Reglas r : reglasNoEquiparadas){
-            System.out.println("");
-            r.mostrarAntecedentes();
-            System.out.print("-->"+r.getConsecuente());
-            System.out.println("");
+        for (Reglas r : reglasNoEquiparadas){
+            r.mostrarRegla();
         }
         reglasNoAplicables = reglasNoEquiparadas;
 
@@ -100,7 +85,6 @@ public class MotoroInferencia {
     private void resolucion(String goal){
         boolean existe = false;
         if(conjuntoConflicto.isEmpty()){
-            System.out.println("La meta no se logro y ya no hay más reglas que aplicar");
         }else {
             String nuevoHecho = conjuntoConflicto.get(0).getConsecuente();
             existe = buscarEnBh(nuevoHecho, bh);
@@ -110,45 +94,23 @@ public class MotoroInferencia {
                 equiparar(conocimientos, bh);
                 conocimientos = reglasNoAplicables;
             }
+            reglasAplicadas.add(conjuntoConflicto.get(0));
             conjuntoConflicto.remove(0);
             indice_Reglas.remove(0);
 
             if (!conjuntoConflicto.isEmpty() && !goal.equalsIgnoreCase(nuevoHecho)) {
                 resolucion(goal);
             } else if (goal.equalsIgnoreCase(nuevoHecho)) {
-                System.out.println("La meta ha sido alcanzada");
             } else {
-                System.out.println("La meta no se logro y ya no hay más reglas que aplicar");
             }
         }
     }
 
-    private void imprimirIndices(){
-        for(Integer indice : indice_Reglas){
-            System.out.println("regla: "+ indice);
-        }
+    public ArrayList<Reglas> getReglasAplicadas() {
+        return reglasAplicadas;
     }
 
-    private void mostrarBH(){
-        for (int i = 0; i<bh.size();i++){
-            System.out.println(bh.get(i));
-        }
-    }
-
-    private void mostrarConflicto(){
-        for (Reglas conflicto : conjuntoConflicto){
-            conflicto.mostrarAntecedentes();
-            System.out.print("-->"+conflicto.getConsecuente());
-            System.out.println("");
-        }
-    }
-
-    private void mostrarConocimiento(){
-        System.out.println("REGLAS EN LA BASE DE CONOCIMIENTOS");
-        for (Reglas conocimineto: conocimientos){
-            conocimineto.mostrarAntecedentes();
-            System.out.println("-->"+conocimineto.getConsecuente());
-            System.out.println("");
-        }
+    public void setReglasAplicadas(ArrayList<Reglas> reglasAplicadas) {
+        this.reglasAplicadas = reglasAplicadas;
     }
 }

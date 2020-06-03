@@ -139,14 +139,6 @@ public class ActualizacionController implements Initializable {
                 }
                 antecedentes.add(antecendente_completo);
             }
-            System.out.println("EDITANDING : "+llave);
-            System.out.println("ANTECEDENTES: ");
-            for (String s : antecedentes){
-                System.out.println("");
-                System.out.print(""+s);
-                System.out.println("tamaño: "+s.length());
-            }
-            System.out.println("");
             consecuente_completo = "";
             for (int i = 0 ; i<30;i++){
                 if(i<consecuente.length()){
@@ -156,8 +148,6 @@ public class ActualizacionController implements Initializable {
                 }
             }
             consecuente = consecuente_completo;
-            System.out.println("CONSECUENTE: "+consecuente);
-            System.out.print("TAMAÑO: "+consecuente.length());
             am.editar(llave,antecedentes,consecuente);
         } catch (Exception e) {
             e.printStackTrace();
@@ -167,7 +157,6 @@ public class ActualizacionController implements Initializable {
     private void eliminar(){
         try {
             int llave = Integer.parseInt(llave_tf.getText());
-            System.out.println("ELIMINANDING: "+llave);
             am.eliminar(llave);
         } catch (IOException e) {
             e.printStackTrace();
@@ -175,7 +164,6 @@ public class ActualizacionController implements Initializable {
     }
 
     private void agregar(){
-        System.out.println("AGREGANDING");
         String consecuente = cons_tf.getText().toUpperCase();
         String entrada = ant_tf.getText();
 
@@ -195,13 +183,6 @@ public class ActualizacionController implements Initializable {
                 }
                 antecedentes.add(antecendente_completo);
             }
-            System.out.println("ANTECEDENTES: ");
-            for (String s : antecedentes){
-                System.out.println("");
-                System.out.print(""+s);
-                System.out.println("tamaño: "+s.length());
-            }
-            System.out.println("");
             consecuente_completo = "";
             for (int i = 0 ; i<30;i++){
                 if(i<consecuente.length()){
@@ -211,8 +192,6 @@ public class ActualizacionController implements Initializable {
                 }
             }
             consecuente = consecuente_completo;
-            System.out.println("CONSECUENTE: "+consecuente);
-            System.out.print("TAMAÑO: "+consecuente.length());
             ArrayList<Reglas>r = new ArrayList<>();
             r.add(new Reglas(antecedentes,consecuente,0));
             if (archivoExiste){

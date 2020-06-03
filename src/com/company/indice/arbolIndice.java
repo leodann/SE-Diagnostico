@@ -49,7 +49,6 @@ public class arbolIndice {
             }
             if(ant.llave==llave)
             {
-                System.out.println("La llave se encuentra en el arbol: "+ ant.llave);
                 p = ant.dirl;
             }
             else

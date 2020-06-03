@@ -57,7 +57,6 @@ public class archivoMaestro {
         ari = new arbolIndice();
         archi.setLength(0);
         llave = 1;
-        System.out.println("Ｃｒｅｎａｄｏ   ｂａｓｅ   ｄｅ   ｃｏｎｏｃｉｍｉｅｎｔｏｓ");
         for (int i = 0; i < reglas.size(); i++) {
             Reglas regla1 = reglas.get(i);
             archi.writeInt(llave);
@@ -161,7 +160,6 @@ public class archivoMaestro {
         boolean existe = existeLlave(llave);
         RandomAccessFile archi = new RandomAccessFile("conocimiento","rw");
         long pos = ari.Buscar(llave);
-        System.out.println("POS ::" +pos);
         int rllave;
         String consec = "";
         ArrayList<String>rantecedentes = new ArrayList<>();
@@ -173,22 +171,17 @@ public class archivoMaestro {
             if (pos<archi.length()){
                 archi.seek(pos);
                 rllave = archi.readInt();
-                System.out.println("LLAVE : "+ rllave);
                 for (int i = 0; i < 8; i++) {
                     String ant = "";
                     for (int j = 0; j < 30; j++) {
                         ant += archi.readChar();
                     }
-
-                    System.out.println("ANTECEDENTES: "+ ant);
                     rantecedentes.add(ant);
                 }
                 consec = "";
                 for (int i = 0; i < 30; i++) {
                     consec += archi.readChar();
                 }
-                System.out.println("CONSECUENTE: "+consec);
-
                 reglabuscada = new Reglas(rantecedentes,consec,llave);
 
             }else{
